@@ -31,6 +31,14 @@ function startApp() {
                 console.log(results);
                 console.table("All employees", [...results]);
             });
+        } else if (response.task === "add a department") {
+
+        } else if (response.task === "add a role") {
+
+        } else if (response.task === "add an employee") {
+
+        } else if (response.task === "update an employee role") {
+
         } else {
             console.log("Goodbye");
             process.exit();
