@@ -13,6 +13,8 @@ inquirer
     .then((response) => {
         console.log(response.task);
         if (response.task === "view all departments") {
-            db.query("SELECT ")
+            db.query("SELECT * FROM department", function (err, results) {
+                console.log(results)
+            })
         }
     })
