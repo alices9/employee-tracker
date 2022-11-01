@@ -5,7 +5,7 @@ const db = mysql.createConnection(
         host: "localhost",
         user: "root",
         password: "sqlpassword",
-        database: "music_api_db"
+        database: "employees_db"
     }
 )
 

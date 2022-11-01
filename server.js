@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const db = require("./db");
 
 inquirer
     .prompt([
@@ -12,6 +13,6 @@ inquirer
     .then((response) => {
         console.log(response.task);
         if (response.task === "view all departments") {
-            
+            db.query("SELECT ")
         }
     })
