@@ -15,19 +15,19 @@ function startApp() {
     ])
     .then((response) => {
         if (response.task === "view all departments") {
-            db.query("SELECT * FROM department", function (err, results) {
+            db.query("SELECT department.id, department.name AS `Group Type` FROM department", function (err, results) {
                 console.log("All departments")
                 console.table(results);
                 startApp();
             });
         } else if (response.task === "view all roles") {
-            db.query("SELECT * FROM role", function (err, results) {
+            db.query("SELECT role.id, role.title AS `Group Name`, role.salary, department.name AS `Group Type` FROM role JOIN department ON role.department_id = department.id", function (err, results) {
                 console.log("All roles");
                 console.table(results);
                 startApp();
             });
         } else if (response.task === "view all employees") {
-            db.query("SELECT * FROM employee JOIN role ON employee.role_id = role.id", function (err, results) {
+            db.query("SELECT employee.id, employee.first_name, employee.last_name, role.title AS `Group Name`, department.name AS `Group Type`, role.salary, employee.manager_id FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id", function (err, results) {
                 console.log("All employees");
                 console.table(results);
                 startApp();
