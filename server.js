@@ -64,7 +64,19 @@ function addDepartment() {
     })
 }
 
+// create array to store keys and values
+let deptArr = [];
+db.query("SELECT department.id, department.name FROM department", (err, result) => {
+    // deconstruct and store keys and values into new array
+    deptArr = result.map(({ id, name }) => ({id: id, name: name}));
+})
+
 function addRole() {
+    let newDeptArr = [];
+    console.log(deptArr);
+    for (let i = 0; i < deptArr.length; i++) {
+        newDeptArr.push(deptArr[i].id);
+    }
     inquirer
     .prompt([
         {
@@ -76,17 +88,35 @@ function addRole() {
             type: "input",
             name: "salary",
             message: "What is the role's salary?"
+        },
+        {
+            type: "list",
+            name: "dept",
+            message: "What department is the role in?",
+            choices: newDeptArr
         }
     ])
     .then((response) => {
-        db.query("INSERT INTO role(title, salary) VALUES (?, ?)", [response.role, response.salary], (err, result) => {
+        db.query("INSERT INTO role(title, salary, department_id) VALUES (?, ?, ?)", [response.role, response.salary, response.dept], (err, result) => {
             console.log(`${response.role} was added to the list of roles.`);
         })
         startApp();
     })
 }
 
+// create array to store keys and values
+let roleArr = [];
+db.query("SELECT role.id, role.title FROM role", (err, result) => {
+    // deconstruct and store keys and values into new array
+    roleArr = result.map(({ id, title }) => ({id: id, title: title}));
+})
+
 function addEmployee() {
+    let newRoleArr = [];
+    console.log(roleArr);
+    for (let i = 0; i < roleArr.length; i++) {
+        newRoleArr.push(roleArr[i].id);
+    }
     inquirer
     .prompt([
         {
@@ -98,10 +128,16 @@ function addEmployee() {
             type: "input",
             name: "last",
             message: "What is the employee's last name?"
+        },
+        {
+            type: "list",
+            name: "role",
+            message: "What is the employee's role?",
+            choices: newRoleArr
         }
     ])
     .then((response) => {
-        db.query("INSERT INTO employee(first_name, last_name) VALUES (?, ?)", [response.first, response.last], (err, result) => {
+        db.query("INSERT INTO employee(first_name, last_name, role_id) VALUES (?, ?, ?)", [response.first, response.last, response.role], (err, result) => {
             console.log(`${response.first} ${response.last} was added to the list of empoloyees.`);
         })
         startApp();
@@ -109,6 +145,11 @@ function addEmployee() {
 }
 
 function updateEmployeeRole() {
+    let newRoleArr = [];
+    console.log(roleArr);
+    for (let i = 0; i < roleArr.length; i++) {
+        newRoleArr.push(roleArr[i].id);
+    }
     inquirer
     .prompt([
         {
@@ -125,12 +166,12 @@ function updateEmployeeRole() {
             type: "list",
             name: "newRole",
             message: "What is their new role?",
-            choices: []
+            choices: newRoleArr
         }
     ])
     .then((response) => {
         db.query("UPDATE employee SET (first_name, last_name) VALUES (?, ?)", [response.first, response.last], (err, result) => {
-            console.log(`${response.first} ${response.last} was added to the list of empoloyees.`);
+            console.log(`${response.first} ${response.last}'s role was updated.`);
         })
         startApp();
     })
